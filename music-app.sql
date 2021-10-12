@@ -5,7 +5,7 @@
 -- Počítač: 127.0.0.1
 -- Vytvořeno: Úte 12. říj 2021, 14:11
 -- Verze serveru: 10.4.21-MariaDB
--- Verze PHP: 8.0.11
+-- Verze PHP: 7.3.31
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,10 +18,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Databáze: `ut_music`
+-- Databáze: `zaoralek_music`
 --
-CREATE DATABASE IF NOT EXISTS `ut_music` DEFAULT CHARACTER SET utf8 COLLATE utf8_czech_ci;
-USE `ut_music`;
+CREATE DATABASE IF NOT EXISTS `zaoralek_music` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_czech_ci;
+USE `zaoralek_music`;
 
 -- --------------------------------------------------------
 
@@ -31,19 +31,23 @@ USE `ut_music`;
 
 CREATE TABLE `authors` (
   `id` int(11) NOT NULL,
-  `name` varchar(255) COLLATE utf8_czech_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_czech_ci NOT NULL,
   `created` date NOT NULL,
   `end` date DEFAULT NULL,
-  `bio` text COLLATE utf8_czech_ci DEFAULT NULL,
-  `image` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+  `bio` text COLLATE utf8mb4_czech_ci DEFAULT NULL,
+  `image` varchar(255) COLLATE utf8mb4_czech_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_czech_ci;
 
 --
 -- Vypisuji data pro tabulku `authors`
 --
 
 INSERT INTO `authors` (`id`, `name`, `created`, `end`, `bio`, `image`) VALUES
-(2, 'Slipknot', '1993-01-01', NULL, NULL, NULL);
+(1, 'Slipknot', '1993-01-01', '0000-00-00', NULL, NULL),
+(2, 'Slipknot', '1993-01-01', NULL, NULL, NULL),
+(3, 'Childish Gambino', '2000-01-04', NULL, NULL, NULL),
+(4, 'BTS', '2013-01-01', NULL, NULL, NULL),
+(5, 'Lukas Kril', '2002-01-01', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -53,8 +57,8 @@ INSERT INTO `authors` (`id`, `name`, `created`, `end`, `bio`, `image`) VALUES
 
 CREATE TABLE `genres` (
   `id` int(11) NOT NULL,
-  `name` varchar(255) COLLATE utf8_czech_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+  `name` varchar(255) COLLATE utf8mb4_czech_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_czech_ci;
 
 --
 -- Vypisuji data pro tabulku `genres`
@@ -62,7 +66,13 @@ CREATE TABLE `genres` (
 
 INSERT INTO `genres` (`id`, `name`) VALUES
 (1, 'nu-meta'),
-(2, 'metalcore');
+(2, 'metalcore'),
+(3, 'pop'),
+(4, 'rap'),
+(5, 'K-pop'),
+(6, 'Rap'),
+(7, 'Rap'),
+(8, 'love songs');
 
 -- --------------------------------------------------------
 
@@ -75,36 +85,42 @@ CREATE TABLE `songs` (
   `id_author` int(11) NOT NULL,
   `id_genre` int(11) NOT NULL,
   `duration` time NOT NULL DEFAULT '00:00:00',
-  `name` varchar(255) COLLATE utf8_czech_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_czech_ci NOT NULL,
   `year` int(4) DEFAULT NULL,
-  `file` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+  `file` varchar(255) COLLATE utf8mb4_czech_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_czech_ci;
 
 --
 -- Vypisuji data pro tabulku `songs`
 --
 
 INSERT INTO `songs` (`id`, `id_author`, `id_genre`, `duration`, `name`, `year`, `file`) VALUES
-(1, 2, 1, '00:00:00', 'Spit It Out', 1999, 'https://open.spotify.com/track/4Y2LMfn1BTdcvnO9cmJWU6?autoplay=true');
+(1, 2, 1, '00:00:00', 'Spit it Out', 1999, 'https://www.youtube.com/watch?v=ZPUZwriSX4M'),
+(2, 3, 3, '00:00:00', 'this is america', 2018, NULL),
+(3, 4, 5, '00:00:00', 'Dynamite', NULL, NULL),
+(4, 4, 5, '00:00:00', 'Butter', NULL, NULL),
+(5, 3, 4, '00:00:00', 'Bonfire', NULL, NULL),
+(6, 5, 8, '00:00:00', 'Ledový srdce', NULL, NULL),
+(7, 5, 7, '00:00:00', 'Liberecká verbeš', NULL, NULL);
 
 --
 -- Indexy pro exportované tabulky
 --
 
 --
--- Indexy pro tabulku `authors`
+-- Indexy pro tabulku `authors`
 --
 ALTER TABLE `authors`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexy pro tabulku `genres`
+-- Indexy pro tabulku `genres`
 --
 ALTER TABLE `genres`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexy pro tabulku `songs`
+-- Indexy pro tabulku `songs`
 --
 ALTER TABLE `songs`
   ADD PRIMARY KEY (`id`),
@@ -119,19 +135,19 @@ ALTER TABLE `songs`
 -- AUTO_INCREMENT pro tabulku `authors`
 --
 ALTER TABLE `authors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pro tabulku `genres`
 --
 ALTER TABLE `genres`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT pro tabulku `songs`
 --
 ALTER TABLE `songs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Omezení pro exportované tabulky
