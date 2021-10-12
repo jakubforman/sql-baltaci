@@ -31,3 +31,6 @@ ALTER TABLE songs
 ADD FOREIGN KEY (id_genre) 
 REFERENCES genres(id);
     
+    
+-- insert
+INSERT INTO `genres` (`id`, `name`) VALUES (NULL, 'nu-meta'), (NULL, 'metalcore');
